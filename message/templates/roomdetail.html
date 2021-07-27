@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <table>
+        <thead>
+            <th>
+                <p style="text-align: center;"><strong> User</strong></p>
+            </th>
+            <th>
+                <p style="text-align: center;"><strong> Message</strong></p>
+            </th>
+
+    
+        </thead>
+        {% for msg in messages %}
+        <tr>
+
+            <td>
+                {{msg.author}}
+            </td>
+            <td>
+                {{msg.text }}
+            </td>
+            <td>
+                <a  href="{% url 'message:post_delete' msg.id %}">Удалить</a>
+
+            </td>
+
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <a  href="{% url 'message:post_create' roomid %}">Добавить сообщение</a>  
+
+
+
+
+
+</body>
+</html>

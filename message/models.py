@@ -16,9 +16,21 @@ class Author(models.Model):
 
 
 
+
+class ChatRoom(models.Model):
+    chatMember = models.ForeignKey(Author, on_delete=models.CASCADE)
+    chatRoomName = models.CharField(max_length= 30)
+
+    def __str__(self):
+        return self.chatRoomName
+
+
 class Message(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     text = models.TextField()
+    chatRoom = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
+
+       
 
        
     def __str__(self):
@@ -26,12 +38,5 @@ class Message(models.Model):
 
 
 
-class ChatRoom(models.Model):
-    message = models.ForeignKey(Message, on_delete=models.CASCADE)
-    chatMember = models.ForeignKey(Author, on_delete=models.CASCADE)
-    chatRoomName = models.CharField(max_length= 30)
-
-
-       
-    def __str__(self):
-        return self.chatRoomName
+#    def get_absolute_url(self): 
+#        return f'/' 

@@ -7,6 +7,7 @@
 </head>
 <body>
 
+    {% if messages %}
     <table>
         <thead>
             <th>
@@ -16,7 +17,8 @@
                 <p style="text-align: center;"><strong> Message</strong></p>
             </th>
 
-    
+            
+
         </thead>
         {% for msg in messages %}
         <tr>
@@ -37,8 +39,41 @@
 
     </table>
 
+    {%else%}
+    <h3>В данной теме сообщений нет</h3>
+
+    {% endif %}
+
+
     <a  href="{% url 'message:post_create' roomid %}">Добавить сообщение</a>  
 
+    <h2>Список пользователей в данном чате</h2>
+    {% for user in usersInRoom %}
+    <a href="{% url 'message:userinfo' user.id %}">{{user}}</a>  
+ 
+    
+
+    {% endfor %}
+
+    <h2>Список зарегистрированных пользователей</h2>
+    <table>
+        {% for user in usersList %}
+        <tr>
+            <td>
+
+                <a href="{% url 'message:userinfo' user.id %}">{{user}}</a> 
+
+            </td>
+
+            
+            <td>
+
+                <a href="{% url 'message:add_user' user.id %}">Добавить в данный чат</a>  
+
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 
 
 

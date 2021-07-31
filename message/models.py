@@ -12,17 +12,18 @@ class Author(models.Model):
     def __str__(self):
         return self.name
 
-
-
-
+    def getUserName(self):
+        return self.authorUser
 
 
 class ChatRoom(models.Model):
-    chatMember = models.ForeignKey(Author, on_delete=models.CASCADE)
+
+    chatMember = models.ManyToManyField(Author) 
     chatRoomName = models.CharField(max_length= 30)
 
     def __str__(self):
         return self.chatRoomName
+
 
 
 class Message(models.Model):
@@ -36,7 +37,3 @@ class Message(models.Model):
     def __str__(self):
         return self.text
 
-
-
-#    def get_absolute_url(self): 
-#        return f'/' 

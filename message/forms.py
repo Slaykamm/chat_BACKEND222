@@ -17,6 +17,6 @@ class RoomForm(ModelForm):
  
     class Meta:
         model = ChatRoom
-        fields = [ 'chatRoomName'  ] #'chatMember',
+        fields = [ 'chatRoomName' ] #'chatMember', , 'chatMember' 
 
 

@@ -1,0 +1,2 @@
+{% load i18n %}
+{% blocktrans %}Емаил адрес удален {{email}}.{% endblocktrans %}

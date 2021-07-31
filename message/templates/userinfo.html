@@ -1,0 +1,19 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Name: {{userinfo.name}} </h1>
+    <h1>Avatar: <img src= "{{userinfo.authorAvatar.url}}"  width="320" height="240" alt="picture"> </h1>
+
+    
+    <a  href="{% url 'message:direct_post_create' userinfo.id %}">Отправить личное сообщение</a>
+
+    
+</body>
+</html>

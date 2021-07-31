@@ -4,6 +4,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
+    {% if logged_user %}
+    <a href="{% url 'message:userinfo' user.id %}">{{logged_user}} </a>
+    <a href="/sign/logout/">Логаут</a>
+    {% else %}
+    <a href="/accounts/login/">Логин</a>                     
+    {% endif %}
+
+
 </head>
 <body>
 

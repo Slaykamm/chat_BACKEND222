@@ -15,11 +15,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
+from message import views
+from message.views import RoomApiDeleteView
+
+router = routers.DefaultRouter()
+router.register(r'roomsAPI', views.GroupViewSet)
+router.register(r'messageAPI', views.MessageViewSet)
+router.register(r'userAPI', views.AuthorViewSet)
+router.register(r'roomsAPI/roomdelete/<int:pk>', RoomApiDeleteView)
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 #    path('api/', include('message.urls')),
     path('', include('message.urls')),
     path('accounts/', include('allauth.urls')),
-    path('sign/', include('sign.urls'))
+    path('sign/', include('sign.urls')),
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

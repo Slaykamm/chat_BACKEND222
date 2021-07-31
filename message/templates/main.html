@@ -6,7 +6,7 @@
     <title>Document</title>
 
     {% if logged_user %}
-    <a href="/posts/contact/">{{logged_user}} </a>
+    <a href="{% url 'message:userinfo' user.id %}">{{logged_user}} </a>
     <a href="/sign/logout/">Логаут</a>
     {% else %}
     <a href="/accounts/login/">Логин</a>                     

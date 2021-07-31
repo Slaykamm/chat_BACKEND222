@@ -3,45 +3,38 @@ from django.core.checks import messages
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Author, ChatRoom, Message
-from .serializers import ChatRoomSerializer, AuthorSerializer, MessageSerializer
+from .serializers import *
+from .serializers import RoomApiDeleteViewSerializer
+from rest_framework import viewsets
+from rest_framework import permissions
 from .forms import PostForm, RoomForm
 from django.shortcuts import get_object_or_404
-
-
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 
-#variables for transmission between views
 
+#variables for transmission between views
 roomidGlobal = 0
 newRoomNameGlobal = ""
 
+class GroupViewSet(viewsets.ModelViewSet):
+   queryset = ChatRoom.objects.all()
+   permission_classes = [permissions.AllowAny]
+   serializer_class = GroupViewSerializer
 
 
 
-# class ChatRoomView(APIView):
-#     def get(self, request, **kwargs):
-#         rooms = ChatRoom.objects.all()
-#         serializer = ChatRoomSerializer(rooms, many=True)
- 
+class MessageViewSet(viewsets.ModelViewSet):
+   queryset = Message.objects.all()
+   permission_classes = [permissions.AllowAny]
+   serializer_class = MessageViewSerializer
 
 
-#         return Response({"chats": serializer.data})
+class AuthorViewSet(viewsets.ModelViewSet):
+   queryset = Author.objects.all()
+   permission_classes = [permissions.AllowAny]
+   serializer_class = AuthorViewSerializer
 
-
-# class AuthorView(APIView):
-#     def get(self, request, **kwargs):
-#         authors = Author.objects.all()
-#         serializer = AuthorSerializer(authors, many=True)
-
-#         return Response({"authors": serializer.data})
-
-# class MessageView(APIView):
-#     def get(self, request, **kwargs):
-#         authors = Message.objects.all()
-#         serializer = MessageSerializer(authors, many=True)
-
-#         return Response({"authors": serializer.data})
 
 
 
@@ -57,32 +50,6 @@ class GroupView(ListView):
         return context
 
 
-    #     roomsNames = ChatRoom.objects.all()
-    #     numberOfMessagesInRoomArray = []
-    #     numberOfUsersInRoomArray = []
-    #     for roomsName in roomsNames:
-
-    #     #я хочу получить кол-во мессаджей в комнате
-    #         messagesInRoom = Message.objects.filter(chatRoom__chatRoomName = roomsName).values('text')
-    #         numberOfMessagesInRoom = len(list(messagesInRoom))
-    #         numberOfMessagesInRoomArray.append(numberOfMessagesInRoom)
-            
-    #     # # я хочу получить кол-во юзеров
-    #         usersInRoom = Message.objects.filter(chatRoom__chatRoomName = roomsName).values('author').distinct()
-    #         for users in usersInRoom:
-    #             userr = Author.objects.filter(id = users['author'])
-    #             for user in userr:
-    #             #получаем имена
-    #                 numberOfUsersInRoomArray.append(user) 
-
-    #         numberOfUsersInRoom = len(list(usersInRoom))   
-       
-    #     print(numberOfMessagesInRoomArray, numberOfUsersInRoomArray)
-
-    #     context['userNumber'] = numberOfUsersInRoomArray
-    #     context['messageNumber'] = numberOfMessagesInRoomArray
-   
-    #     return context
 
 
 
@@ -130,6 +97,8 @@ class RoomDetailView(DetailView):
         return get_object_or_404(ChatRoom, pk=self.kwargs.get('pk'))
 
 
+
+
 class AddUserRoomView(DetailView):
     template_name = 'add_user.html'  
     queryset = Author.objects.all()
@@ -148,6 +117,7 @@ class AddUserRoomView(DetailView):
         usersRoom = ChatRoom.objects.get(id = roomid)
         usersRoom.chatMember.add(Author.objects.get(id = id))
         return context
+
 
 
 
@@ -184,8 +154,16 @@ class RoomUpdateView(UpdateView):
         id = self.kwargs.get('pk')
         return ChatRoom.objects.get(pk=id)
 
+
+class RoomApiDeleteView(viewsets.ModelViewSet):
+   queryset = ChatRoom.objects.all()
+   permission_classes = [permissions.AllowAny]
+   serializer_class = RoomApiDeleteViewSerializer
+   
+
+
 class RoomDeleteView(DeleteView):
-    template_name = 'post_delete.html'
+    template_name = 'main.html'
     queryset = ChatRoom.objects.all()
     success_url = '/'
 

@@ -1,26 +1,56 @@
 #from chat.message.models import Message
 from django.db.models import fields
 from rest_framework import serializers
-from .models import ChatRoom, Author, Message
+from django.http import HttpResponseRedirect
+from .models import *
 
 
-# class ChatRoomSerializer(serializers.Serializer):
-#     chatRoomName = serializers.CharField(max_length=200)
-#     chatMember = serializers.CharField(source='chatMember.name', max_length=200)
-#     message = serializers.CharField(source='message.text', max_length=200)
-#     fields = [chatRoomName, chatMember, message]
 
-class ChatRoomSerializer(serializers.ModelSerializer):
+
+class GroupViewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChatRoom
-        fields = ['chatRoomName', 'chatMember', 'message']
+        fields = ['id', 'chatRoomName', 'chatMember' ]
+
+    def create(self, validated_data):
+        chatRoomName = validated_data.pop('chatRoomName')
+        newRoom = ChatRoom.objects.create(chatRoomName=chatRoomName,**validated_data)
+        return newRoom
+
+class MessageViewSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Message
+        fields = ['id', 'author', 'text', 'chatRoom' ]
 
 
-class AuthorSerializer(serializers.ModelSerializer):
+class AuthorViewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Author
+        fields = ['id', 'name', 'authorUser', 'authorAvatar' ]
+
+
+
+
+
+class RoomApiDeleteViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChatRoom
+        fields = ['id', 'chatRoomName']
+    
+    def delete(self, validated_data):
+        chatRoomName = validated_data.pop('chatRoomName')
+        newRoom = ChatRoom.objects.get(chatRoomName=chatRoomName,**validated_data)
+        newRoom.delete()
+        return HttpResponseRedirect("/roomsAPI/")
+
+
+class RoomDetailViewSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Message
         fields = ['name', 'authorUser', 'authorAvatar']
         
 class MessageSerializer(serializers.ModelSerializer):

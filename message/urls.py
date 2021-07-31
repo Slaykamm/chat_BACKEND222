@@ -21,6 +21,9 @@ urlpatterns = [
     path('userinfo/<int:pk>/', UserInfoView.as_view(), name='userinfo'),
     path('create/<int:pk>', SendDirectMessageView.as_view(), name='direct_post_create'),
 
+
+
+
     
 
     

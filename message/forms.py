@@ -1,6 +1,6 @@
-from django.forms import ModelForm, Textarea
+from django.forms import ModelForm, Textarea 
 
-from .models import Message, ChatRoom
+from .models import Message, ChatRoom, Author
  
  
 class PostForm(ModelForm):
@@ -20,3 +20,8 @@ class RoomForm(ModelForm):
         fields = [ 'chatRoomName' ] #'chatMember', , 'chatMember' 
 
 
+
+class ImageForm(ModelForm):
+    class Meta:
+        model = Author
+        fields = ['name', 'authorAvatar' ]

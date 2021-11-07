@@ -16,23 +16,33 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+#from rest_framework.urlpatterns import format_suffix_patterns
 from message import views
 from message.views import RoomApiDeleteView
+from django.conf import settings
+from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
 router.register(r'roomsAPI', views.GroupViewSet)
 router.register(r'messageAPI', views.MessageViewSet)
 router.register(r'userAPI', views.AuthorViewSet)
+router.register(r'loginAPI', views.LoginViewSet)
 router.register(r'roomsAPI/roomdelete/<int:pk>', RoomApiDeleteView)
+router.register(r'roomsAPI/<int:pk>/', views.GroupViewUpdate)
+
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-#    path('api/', include('message.urls')),
     path('', include('message.urls')),
     path('accounts/', include('allauth.urls')),
     path('sign/', include('sign.urls')),
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
+
+
+# включаем возможность обработки картинок
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
